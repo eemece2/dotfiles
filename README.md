@@ -12,7 +12,7 @@ Instalation
 To install the dotfiles on a GNU/Linux system use:
 ```
 $ git clone https://github.com/eemece2/dotfiles.git ~/.dotfiles
-$ ~/.dotfiles/.install
+$ ~/.dotfiles/install
 ```
 This will create a symlink in the correct place in your home directory to each dotfile.
 The install script is idempotent - running it multiple times won't cause any issues, it will just update the git submodules.
