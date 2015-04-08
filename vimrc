@@ -234,7 +234,7 @@ NeoBundle 'aquach/vim-http-client'          " Forget your curl today! Make HTTP 
 NeoBundle 'marijnh/tern_for_vim'            " Tern plugin for Vim (Javascript editign support, completion, ...)
                                             "   Post neobundle install with:  cd ~/.vim/bundle/tern_for_vim/ && npm install
 NeoBundle 'suan/vim-instant-markdown'
-
+NeoBundle 'joonty/vdebug'                   " Multi-language DBGP debugger client for Vim (PHP, Python, Perl, Ruby, etc.)
 
 " Required:
 call neobundle#end()
