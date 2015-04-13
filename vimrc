@@ -63,6 +63,9 @@ set smartcase                   " ... unless they contain at least one capital l
 set relativenumber              " line numbers relative to the current cursor position
 "set number
 
+"" Scroll
+set scrolloff=10                " Visible lines (up or down the cursor) when scrolling (up or down)
+
 " Highlight unwanted spaces, tabs, EOL, ...
 "set list                        " Highlight whitespaces, EOL, ...
 "set listchars=eol:¬             " EOL
