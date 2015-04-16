@@ -235,6 +235,8 @@ NeoBundle 'marijnh/tern_for_vim'            " Tern plugin for Vim (Javascript ed
                                             "   Post neobundle install with:  cd ~/.vim/bundle/tern_for_vim/ && npm install
 NeoBundle 'suan/vim-instant-markdown'
 NeoBundle 'joonty/vdebug'                   " Multi-language DBGP debugger client for Vim (PHP, Python, Perl, Ruby, etc.)
+NeoBundle 'sukima/xmledit'                  " A filetype plugin for VIM to help edit XML files 
+NeoBundle 'godlygeek/tabular'               " Vim script for text filtering and alignment
 
 " Required:
 call neobundle#end()
