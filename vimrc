@@ -168,9 +168,9 @@ let g:syntastic_check_on_wq = 0
 " jshint: Install jshint with: npm install -g jshint
 let g:syntastic_javascript_checkers = ['jshint']
 " html
-let g:syntastic_html_checkers = ['validator']
-" html5
-"let g:syntastic_html_tidy_exec = 'tidy5'
+let g:syntastic_html_checkers = ['tidy']
+" html5 (AngularJS)
+let g:syntastic_html_tidy_exec = 'tidy5'
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -238,7 +238,7 @@ NeoBundle 'marijnh/tern_for_vim'            " Tern plugin for Vim (Javascript ed
                                             "   Post neobundle install with:  cd ~/.vim/bundle/tern_for_vim/ && npm install
 NeoBundle 'suan/vim-instant-markdown'
 NeoBundle 'joonty/vdebug'                   " Multi-language DBGP debugger client for Vim (PHP, Python, Perl, Ruby, etc.)
-NeoBundle 'sukima/xmledit'                  " A filetype plugin for VIM to help edit XML files 
+NeoBundle 'sukima/xmledit'                  " A filetype plugin for VIM to help edit XML files
 NeoBundle 'godlygeek/tabular'               " Vim script for text filtering and alignment
 
 " Required:
