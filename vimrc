@@ -169,8 +169,10 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_javascript_checkers = ['jshint']
 " html
 let g:syntastic_html_checkers = ['tidy']
-" html5 (AngularJS)
+" html5
 let g:syntastic_html_tidy_exec = 'tidy5'
+" AngularJS
+let g:syntastic_html_tidy_ignore_errors = [" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
