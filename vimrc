@@ -1,6 +1,6 @@
 set nocompatible                " choose no compatibility with legacy vi
 syntax on                       " Turn On Color Syntax Highlighting
-"filetype plugin indent on      " load file type plugins + indentation
+filetype plugin indent on      " load file type plugins + indentation
 set encoding=utf-8
 set showcmd                     " display incomplete commands
 " hidden: It hides buffers instead of closing them. This means that you can have
@@ -10,6 +10,14 @@ set showcmd                     " display incomplete commands
 "       http://usevim.com/2012/10/19/vim101-set-hidden/
 set hidden
 colorscheme  molokai            " color theme
+
+"" gruvbox theme
+"set background=dark
+"let g:gruvbox_italic=0
+"let g:gruvbox_contrast_dark = 'hard'
+"colorscheme  gruvbox            " color theme
+
+set exrc " allows for per-project configuration files. https://andrew.stwrt.ca/posts/project-specific-vimrc/
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "" MAPS
@@ -43,6 +51,12 @@ nnoremap <Leader>u :GundoToggle<CR>
 
 " CtrlP         <c-p>
 let g:ctrlp_map = '<c-p>'
+
+" Search with Ag the yanked text
+map <Leader>w yw:Ag <C-R>"<CR><Leader>k*N
+map <Leader>W yw:Ag 'function <C-R>"'<CR><Leader>k*N
+"map <Leader>w yw:Ag <C-R>"<CR>
+"map <Leader>W yw:Ag 'function <C-R>"'<CR>
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -53,6 +67,8 @@ set tabstop=4 shiftwidth=4      " a tab is 4 spaces
 set expandtab                   " use spaces, not tabs
 set backspace=indent,eol,start  " backspace through everything in insert mode
 
+autocmd FileType yaml setlocal shiftwidth=2 tabstop=2
+
 "" Searching
 set hlsearch                    " highlight matches
 set incsearch                   " incremental searching
@@ -61,7 +77,7 @@ set smartcase                   " ... unless they contain at least one capital l
 
 "" Line numbers
 set relativenumber              " line numbers relative to the current cursor position
-"set number
+set number
 
 "" Scroll
 set scrolloff=10                " Visible lines (up or down the cursor) when scrolling (up or down)
@@ -93,6 +109,7 @@ set backupcopy=yes
 "   mv 10-powerline-symbols.conf ~/.config/fontconfig/fonts.conf/
 let g:airline_powerline_fonts=1
 let g:airline_theme = 'wombat'
+" let g:airline_section_y=[]
 set laststatus=2
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -160,20 +177,29 @@ set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+let g:syntastic_always_populate_loc_list = 0
+let g:syntastic_auto_loc_list = 0
 let g:syntastic_check_on_open = 1
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
 " jshint: Install jshint with: npm install -g jshint
-let g:syntastic_javascript_checkers = ['jshint']
+"let g:syntastic_javascript_checkers = ['jshint']
+" eslint: Install eslint with: npm install -g eslint
+" configure with: eslint --init
+let g:syntastic_javascript_checkers = ['eslint']
 " html
 let g:syntastic_html_checkers = ['tidy']
 " html5
 let g:syntastic_html_tidy_exec = 'tidy5'
 " AngularJS
 let g:syntastic_html_tidy_ignore_errors = [" proprietary attribute " ,"trimming empty <", "unescaped &" , "lacks \"action", "is not recognized!", "discarding unexpected"]
+
 "
+" C
+" let g:syntastic_c_remove_include_errors = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -186,19 +212,50 @@ let g:UltiSnipsExpandTrigger="<c-j>"
 " YCM list completion items:
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "my-vim-ultisnips"]
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Column 80 colored (almost black)
 if (exists('+colorcolumn'))
-    set colorcolumn=80
+    set colorcolumn=100
     highlight ColorColumn ctermbg=16
 endif
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" JSON format
+nmap =j :%!python -m json.tool<CR>
+" js2json  ( npm i @hotoo/js2json jsonmatter -g )
+autocmd FileType json setlocal formatprg=js2json
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" .swp files in a single directory
+set dir=$HOME/.vim/tmp/swap
+if !isdirectory(&dir) | call mkdir(&dir, 'p', 0700) | endif
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" ejs templates
+autocmd BufNewFile,BufRead *.ejs   set syntax=html
+"
+
+
+let g:instant_markdown_autostart = 0
+
+" prettier / neoformat ( https://prettier.io/docs/en/vim.html )
+autocmd BufWritePre *.js,*.json,*.css,*.ts Neoformat
+" InsertLeave
+
+" comments (nerdcommenter)
+let g:NERDSpaceDelims = 1
+let g:NERDCompactSexyComs = 1
+let g:NERDDefaultAlign = 'left'
+let g:NERDCustomDelimiters = { 'c': { 'left': '//','right': '' } }
+
+
 "NeoBundle Scripts
 if has('vim_starting')
   " Required:
@@ -223,11 +280,12 @@ NeoBundle 'jeetsukumaran/vim-buffergator'   " buffer explorer
 NeoBundle 'ctrlpvim/ctrlp.vim'              " Fuzzy file, buffer, mru, tag, etc finder
 NeoBundle 'scrooloose/nerdtree'             " A tree explorer plugin for vim.
 NeoBundle 'scrooloose/nerdcommenter'        " Vim plugin for intensely orgasmic commenting
-NeoBundle 'scrooloose/syntastic'            " Syntax checking hacks for vim
+NeoBundle 'vim-syntastic/syntastic'         " Syntax checking hacks for vim
 NeoBundle 'bling/vim-airline'               " lean & mean status/tabline for vim that's light as air
+NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'SirVer/ultisnips'                " The ultimate snippet solution for Vim
 NeoBundle 'honza/vim-snippets'              " vim-snipmate default snippets
-NeoBundle 'Valloric/YouCompleteMe'          " A code-completion engine for Vim
+"NeoBundle 'Valloric/YouCompleteMe'          " A code-completion engine for Vim
 NeoBundle 'leafgarland/typescript-vim'      " Typescript syntax files for Vim
 NeoBundle 'evidens/vim-twig'                " Twig syntax highlighting, snipMate, etc.
 NeoBundle 'digitaltoad/vim-jade'            " Vim Jade template engine syntax highlighting and indention
@@ -242,6 +300,12 @@ NeoBundle 'suan/vim-instant-markdown'
 NeoBundle 'joonty/vdebug'                   " Multi-language DBGP debugger client for Vim (PHP, Python, Perl, Ruby, etc.)
 NeoBundle 'sukima/xmledit'                  " A filetype plugin for VIM to help edit XML files
 NeoBundle 'godlygeek/tabular'               " Vim script for text filtering and alignment
+NeoBundle 'chase/vim-ansible-yaml'          " Add additional support for Ansible in VIM (for YAML files -indentation -)
+NeoBundle 'isRuslan/vim-es6'                " List of JavaScript ES6 snippets and syntax highlighting for vim.
+NeoBundle 'tpope/vim-surround'              " quoting/parenthesizing made simple
+NeoBundle 'tpope/vim-repeat'                " enable repeating supported plugin maps with
+NeoBundle 'sbdchd/neoformat'                " A (Neo)vim plugin for formatting code. (prettier)
+NeoBundle 'rust-lang/rust.vim'              " This is a Vim plugin that provides Rust file detection, syntax highlighting, formatting, Syntastic integration, and more.
 
 " Required:
 call neobundle#end()
@@ -255,3 +319,4 @@ NeoBundleCheck
 "End NeoBundle Scripts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+set secure  " https://andrew.stwrt.ca/posts/project-specific-vimrc/
